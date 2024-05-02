@@ -1,6 +1,9 @@
 <script>
   import { onMount } from 'svelte';
 
+  // Популярные валюты
+  const popularCurrencies = ['EUR', 'USD', 'CNY'];
+
   export let initialFromCurrency = 'RUB';
   export let initialToCurrency = 'USD';
 
@@ -53,26 +56,26 @@
   <div class="converter__container">
     <input type="number" step="0.001" bind:value={amountFrom} on:input={convertFromTo} />
 
-  <label>
-    Конвертировать из:
-    <select bind:value={fromCurrency} on:change={calculate}>
-      {#each Object.keys(currencyRates) as currency}
-        <option value={currency}>{currency}</option>
-      {/each}
-    </select>
-  </label>
+    <label>
+      Конвертировать из:
+      <select bind:value={fromCurrency} on:change={calculate}>
+        {#each [...popularCurrencies, ...Object.keys(currencyRates).filter(currency => !popularCurrencies.includes(currency))] as currency}
+          <option value={currency}>{currency}</option>
+        {/each}
+      </select>
+    </label>
 
-  <label>
-    В:
-    <select bind:value={toCurrency} on:change={calculate}>
-      {#each Object.keys(currencyRates) as currency}
-        <option value={currency}>{currency}</option>
-      {/each}
-    </select>
-  </label>
+    <label>
+      В:
+      <select bind:value={toCurrency} on:change={calculate}>
+        {#each [...popularCurrencies, ...Object.keys(currencyRates).filter(currency => !popularCurrencies.includes(currency))] as currency}
+          <option value={currency}>{currency}</option>
+        {/each}
+      </select>
+    </label>
 
-  <input type="number" step="0.001" bind:value={amountTo} on:input={convertToFrom} />
-</div>
+    <input type="number" step="0.001" bind:value={amountTo} on:input={convertToFrom} />
+  </div>
 </main>
 
 <style>
